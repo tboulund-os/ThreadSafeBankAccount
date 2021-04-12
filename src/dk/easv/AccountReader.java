@@ -9,7 +9,11 @@ public class AccountReader implements Runnable {
 
     @Override
     public void run() {
-        Double balance = account.getBalance();
-        System.out.println("Balance from Reader: " + balance);
+        try {
+            Double balance = account.getBalance();
+            System.out.println("Balance from Reader: " + balance);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

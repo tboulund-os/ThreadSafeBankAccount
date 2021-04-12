@@ -6,16 +6,34 @@ import java.util.concurrent.Executors;
 public class Main {
 
     public static void main(String[] args) throws InterruptedException {
-        IAccount account = new SimpleAccount();
-        //IAccount account = new AccountWithTransactionsAsArrayList();
-        //IAccount account = new AccountWithTransactionsAsHashMap();
+
+        IAccount account = new TransactionalAccountArrayList();
+        //IAccount account = new TransactionalAccountHashMap();
 
         for (int i = 0; i < 1000; i++) {
             account.changeBalance(1);
         }
         Double balance = account.getBalance();
-
         System.out.println("Balance from Main: " + balance);
+
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        AccountReader reader = new AccountReader(account);
+        AccountWriter writer = new AccountWriter(account);
+
+        executor.submit(writer);
+        executor.submit(reader);
+        executor.shutdown();
+    }
+
+    private static void simpleValueProblem() throws InterruptedException {
+        IAccount account = new SimpleAccount();
+
+        for (int i = 0; i < 1000; i++) {
+            account.changeBalance(1);
+        }
+        Double balance = account.getBalance();
+        System.out.println("Balance from Main: " + balance);
+
         ExecutorService executor = Executors.newFixedThreadPool(2);
         AccountReader reader = new AccountReader(account);
         AccountWriter writer1 = new AccountWriter(account);

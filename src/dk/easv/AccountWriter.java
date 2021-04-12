@@ -11,10 +11,14 @@ public class AccountWriter implements Runnable {
 
     @Override
     public void run() {
-        for (int i = 0; i < 2000; i++) {
-            account.changeBalance(1);
+        try {
+            for (int i = 0; i < 2000; i++) {
+                account.changeBalance(1);
+            }
+            isDone = true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        isDone = true;
     }
 
     public boolean getIsDone() {
