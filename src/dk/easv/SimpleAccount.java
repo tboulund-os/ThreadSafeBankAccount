@@ -15,7 +15,7 @@ public class SimpleAccount implements IAccount {
     }
 
     @Override
-    public void changeBalance(double amount) {
+    public synchronized void changeBalance(double amount) {
         balance += amount;
         try {
             Thread.sleep(1);
